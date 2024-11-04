@@ -1,22 +1,21 @@
 // You are given two strings word1 and word2. Merge the strings by adding letters in alternating order, starting with word1. 
 // If a string is longer than the other, append the additional letters onto the end of the merged string.
 
+// O(max(n,m)) time, O(n+m) space
 var mergeAlternately = function (word1, word2) {
-    const a1 = word1.split('')
-    const a2 = word2.split('')
-    const max = Math.max(a1.length, a2.length)
-    let newA = []
-    for (let i = 0; i < max; i++) {
-        if (i < a1.length) {
-            newA.push(a1[i])
+    let newWord = '';
+    const greatestLength = Math.max(word1.length, word2.length);
+
+    for (let i = 0; i < greatestLength; i++) {
+        if (i < word1.length) {
+            newWord += word1[i]
         }
-        if (i < a2.length) {
-            newA.push(a2[i])
+        if (i < word2.length) {
+            newWord += word2[i]
         }
     }
-    newWord = newA.join('')
-    console.log(newWord);
-    return newWord
+
+    return newWord;
 };
 
 mergeAlternately('abc', 'pqr')
