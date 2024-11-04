@@ -1,44 +1,37 @@
 // Given a string s, reverse only all the vowels in the string and return it.
 // The vowels are 'a', 'e', 'i', 'o', and 'u', and they can appear in both lower and upper cases, more than once.
 
-// Split string into array, find vowels and track index, reverse array and splice vowels back into array with proper indexes
+// Start at either end of string and switch vowels
 var reverseVowels = function (s) {
-    const vowels = ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U']
-    let vowelsToReverse = []
-    let indexesOfVowels = []
-    const array = s.split('')
-    let newArray = []
+    const vowels = new Set(['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U']);
+    const chars = s.split('');
+    let left = 0;
+    let right = s.length - 1;
 
-    array.forEach((letter, index) => {
-        let isVowel = false;
-        vowels.forEach(vowel => {
-            if (letter === vowel) {
-                isVowel = true;
-            }
-        })
-        if (isVowel) {
-            vowelsToReverse.push(letter);
-            indexesOfVowels.push(index);
+    while (left < right) {
+        while (left < right && !vowels.has(chars[left])) {
+            left++;
         }
-        else {
-            newArray.push(letter)
+        while (left < right && !vowels.has(chars[right])) {
+            right--;
         }
-    });
-
-    let reversedVowels = []
-
-    for (let I = vowelsToReverse.length - 1; I >= 0; I--) {
-        reversedVowels.push(vowelsToReverse[I])
+        if (left < right) {
+            [chars[left], chars[right]] = [chars[right], chars[left]]; // Switch vowels
+            left++;
+            right--;
+        }
     }
 
-    reversedVowels.forEach((vowel, index) => {
-        newArray.splice(indexesOfVowels[index], 0, vowel)
-    })
-
-    const reversedWord = newArray.join('')
-    console.log(reversedWord);
-    return reversedWord
+    return chars.join('');
 }
 
-reverseVowels('hello')
-reverseVowels('leetcode')
+console.log(reverseVowels('leetcode'));
+console.log(reverseVowels('hello'));
+
+//These are the same
+// [chars[left], chars[right]] = [chars[right], chars[left]];
+
+// Shorthand
+// let temp = chars[left];
+// chars[left] = chars[right];
+// chars[right] = temp;
