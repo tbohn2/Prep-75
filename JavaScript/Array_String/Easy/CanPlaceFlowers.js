@@ -3,18 +3,24 @@
 // Given an integer array flowerbed containing 0's and 1's, where 0 means empty and 1 means not empty, and an integer n,
 // return true if n new flowers can be planted in the flowerbed without violating the no-adjacent-flowers rule and false otherwise.
 
+// O(n) time; O(1) space
 var canPlaceFlowers = function (flowerbed, n) {
-    let roomForMore = true
-    let newFlowerBed = flowerbed
+    let count = 0;
+    const length = flowerbed.length
 
-    for (let i = 0; i < n; i++) {
-        let added = false
-        for (x = 0; x < flowerbed.length; x++) {
-            if (flowerbed[x - 1] === 0 && flowerbed[x] === 0 && flowerbed[x + 1] === 0) { newFlowerBed[x] = 1; added = true; }
+    for (let i = 0; i < length; i++) {
+        // Conditions: empty flowerbed, beginning or previous is empty, end or next is empty
+        if (flowerbed[i] === 0 && (i === 0 || flowerbed[i - 1] === 0) && (i === length - 1 || flowerbed[i + 1] === 0)) {
+            flowerbed[i] = 1;
+            count++;
         }
-        if (added === false) { roomForMore = false }
+
+        if (count >= n) {
+            return true; // Exits the canPlaceFlowers function immediately
+        }
     }
-    return roomForMore;
+
+    return count >= n;
 };
 
 console.log(canPlaceFlowers([1, 0, 0, 0, 1], 1));
