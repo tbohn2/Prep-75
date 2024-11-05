@@ -11,27 +11,35 @@
 
 // You must write an algorithm that uses only constant extra space.
 
+// Pointers to write position and letter position, count characters while the same, once different, write character to chars followed by count if not zero (stringify count and loop)
 var compress = function (chars) {
-    let s = ''
-    let numberOfChars = 0
-    for (let i = 0; i < chars.length; i++) {
-        numberOfChars++
-        if (chars[i] !== chars[i + 1]) {
-            s += chars[i]
-            if (numberOfChars > 1) {
-                s += numberOfChars
+    let write = 0;
+    let i = 0;
+
+    while (i < chars.length) {
+        let char = chars[i];
+        let count = 0;
+
+        while (i < chars.length && chars[i] === char) {
+            i++
+            count++
+        }
+
+        chars[write] = char;
+        write++;
+
+        if (count > 1) {
+            for (let digit of String(count)) {
+                chars[write] = digit;
+                write++;
             }
-            numberOfChars = 0
         }
     }
 
-    // Rewrites chars array; cannot use chars = s.split('')
-    for (let i = 0; i < s.length; i++) {
-        chars[i] = s[i];
-    }
-
-    return s.length
+    // The `write` pointer now represents the length of the compressed array
+    return write;
 };
+
 
 console.log(compress(["a", "a", "b", "b", "c", "c", "c"]));
 console.log(compress(["a"]));
