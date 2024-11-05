@@ -15,7 +15,7 @@ var isSubsequence = function (s, t) {
         tIndex++;
     }
 
-    return sIndex === s.length;
+    return sIndex === s.length; // In the final loop, sPos++ thus returned is s.length comparison rather than s.length - 1
 };
 
 console.log(isSubsequence('abc', 'ahbgdc'));
