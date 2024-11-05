@@ -4,17 +4,18 @@
 // Note that s may contain leading or trailing spaces or multiple spaces between two words.
 //  The returned string should only have a single space separating the words. Do not include any extra spaces.
 
+// Split into array, filter out empty strings and reverse array
 var reverseWords = function (s) {
-    const array = s.split(' ');
-    let reverseArray = []
-    for (i = array.length - 1; i >= 0; i--) {
-        const word = array[i];
-        if (word !== '') {
-            reverseArray.push(word)
-        }
+    // const words = s.split(' ').filter(word => word !== '').reverse(); // Simplest
+    const words = s.split(' ').filter(word => word !== '')
+    let j = words.length - 1;
+    for (i = 0; i < j; i++) {
+        [words[i], words[j]] = [words[j], words[i]]
+        j--
     }
-    const reversedString = reverseArray.join(' ')
-    return reversedString;
+
+    return words;
+
 };
 
 console.log(reverseWords('the sky is blue'));
