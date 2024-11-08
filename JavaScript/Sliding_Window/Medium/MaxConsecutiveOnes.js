@@ -1,50 +1,27 @@
 // Given a binary array nums and an integer k, return the maximum number of consecutive 1's in the array if you can flip at most k 0's.
 
 // Max of O(n) time and O(1) space
-var longestOnes = function (nums, k) {
-    let maxConsecOnes = 0;
-    let start = 0;
-    let end = 1;
-    let consecOnes = 0;
-    let flippedZero = 0;
-    if (k > 0) { consecOnes++; }
-    if (nums[start] === 0) { flippedZero++; };
-    while (end < nums.length) {
-        if (consecOnes > maxConsecOnes) { maxConsecOnes = consecOnes };
-        if (nums[end] === 1) { consecOnes++ }
-        if (nums[end] === 0) {
-            consecOnes++;
-            flippedZero++;
-        }
-        // Only occurs when nums[end] === 0 therefore flippedZero = 1
-        while (flippedZero > k) {
-            if (nums[start] === 0) { flippedZero-- }
-            consecOnes--
-            start++
-        }
-        end++;
-    }
-    return maxConsecOnes;
-};
 
-// More consise:
+// Track number of flipped; move end to nums.length, stopping and progressing start every time flipped > k
 var longestOnes = function (nums, k) {
-    let maxConsecOnes = 0;
     let start = 0;
-    let end = 0;
-    let flippedZero = 0;
-    while (end < nums.length) {
+    let flipped = 0;
+    let maxLength = 0;
+
+    for (end = 0; end < nums.length; end++) {
         if (nums[end] === 0) {
-            flippedZero++;
+            flipped++;
         }
-        while (flippedZero > k) {
-            if (nums[start] === 0) { flippedZero-- }
+        while (flipped > k) {
+            if (nums[start] === 0) {
+                flipped--;
+            }
             start++
         }
-        end++;
-        maxConsecOnes = Math.max(maxConsecOnes, end - start);
+        maxLength = Math.max(end - start, maxLength);
     }
-    return maxConsecOnes;
+
+    return maxLength + 1; // add b/c (end - start) is one less than the length
 };
 
 console.log(longestOnes([1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0], 2));
