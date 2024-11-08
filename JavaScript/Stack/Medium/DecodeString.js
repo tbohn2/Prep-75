@@ -9,35 +9,36 @@
 
 // The test cases are generated so that the length of the output will never exceed 105.
 
-// NEEDS ATTENTION
-
+// Letter and number stack, vars for current string and current number; loop through the string, if number, build up k, 
+//if [, push k and current string to stacks, reset k and current string,
+// if ], pop k and current string from stacks, repeat current string k times, add to current string; return current string
+// if letter, add to current string
 var decodeString = function (s) {
-    let numbers = [];
-    let letters = [];
-    let string = '';
+    const numbers = [];
+    const letters = [];
+    let currentString = '';
     let k = 0;
 
     for (const char of s) {
         if (!isNaN(char)) {
-            k = k * 10 + char; // In case the number is larger than 9
+            k = k * 10 + Number(char);
         }
-        if (char === "[") {
+        else if (char === '[') {
+            letters.push(currentString);
             numbers.push(k);
-            letters.push(string); // On first round, empty string is pushed into letters; this will be the string that we append everything else to in the end
             k = 0;
-            string = '';
+            currentString = '';
         }
-        if (/^[a-zA-Z]+$/.test(char)) {
-            string += char;
+        else if (char === ']') {
+            const repeats = numbers.pop()
+            currentString = letters.pop() + currentString.repeat(repeats);
         }
-        if (char === "]") {
-            let numberOfRepeats = numbers.pop();
-            let currentString = letters.pop();
-            string = currentString + string.repeat(numberOfRepeats);
+        else {
+            currentString += char;
         }
     }
 
-    return string;
+    return currentString;
 };
 
 console.log(decodeString("3[a]2[bc]"));

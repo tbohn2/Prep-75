@@ -11,18 +11,19 @@
 // The input will be generated such that the operation is always possible.
 // It can be shown that the resulting string will always be unique.
 
+// Store letters in stack; loop through string, if star pop else push letrer
 var removeStars = function (s) {
-    let index = 0;
-    while (index < s.length) {
-        if (s.charAt(index) === '*') {
-            s = s.slice(0, index - 1) + s.slice(index + 1, s.length)
-            index--; // Since two characters are removed, index must be decreased to return to position where it was before
-        }
-        else {
-            index++;
+    const stack = [];
+
+    for (const char of s) {
+        if (char === '*') {
+            stack.pop();
+        } else {
+            stack.push(char);
         }
     }
-    return s;
+
+    return stack.join('');
 };
 
 console.log(removeStars("leet**cod*e"));
