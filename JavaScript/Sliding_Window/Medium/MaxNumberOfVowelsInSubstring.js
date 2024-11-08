@@ -2,25 +2,29 @@
 
 // Vowel letters in English are 'a', 'e', 'i', 'o', and 'u'.
 
+// Move end until window is size of k, then move start with each loop, counting down vowels when start position contains vowel; check against max count each loop
 var maxVowels = function (s, k) {
-    const vowels = ['a', 'e', 'i', 'o', 'u'];
-    let maxNumberOfVowels = 0;
+    let vowels = new Set(['a', 'e', 'i', 'o', 'u']);
+    let vowelCount = 0;
+    let maxVowelCount = 0;
     let start = 0;
-    let end = k - 1;
-    let numberOfVowels = 0
-    for (i = 0; i < k; i++) {
-        if (vowels.includes(s[i])) {
-            numberOfVowels++;
+
+    for (let end = 0; end < s.length; end++) {
+        if (vowels.has(s[end])) {
+            vowelCount++;
         }
+
+        if (end - start + 1 > k) {
+            if (vowels.has(s[start])) {
+                vowelCount--;
+            }
+            start++;
+        }
+
+        maxVowelCount = Math.max(maxVowelCount, vowelCount);
     }
-    while (end < s.length) {
-        if (numberOfVowels > maxNumberOfVowels) { maxNumberOfVowels = numberOfVowels }
-        if (vowels.includes(s[start])) { numberOfVowels-- };
-        start++;
-        end++;
-        if (vowels.includes(s[end])) { numberOfVowels++ };
-    }
-    return maxNumberOfVowels;
+
+    return maxVowelCount;
 };
 
 console.log(maxVowels("abciiidef", 3));
