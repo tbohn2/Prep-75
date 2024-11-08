@@ -1,6 +1,7 @@
 // In the world of Dota2, there are two parties: the Radiant and the Dire.
 
-// The Dota2 senate consists of senators coming from two parties. Now the Senate wants to decide on a change in the Dota2 game. The voting for this change is a round-based procedure. In each round, each senator can exercise one of the two rights:
+// The Dota2 senate consists of senators coming from two parties. Now the Senate wants to decide on a change in the Dota2 game. The voting for this change is a round-based procedure. 
+// In each round, each senator can exercise one of the two rights:
 
 // Ban one senator's right: A senator can make another senator lose all his rights in this and all the following rounds.
 // Announce the victory: If this senator found the senators who still have rights to vote are all from the same party, he can announce the victory and decide on the change in the game.
@@ -15,31 +16,29 @@
 // For each party, create array of their position in the queue. Then compare the beginning of each array, with whoever has the lower position gets pushed to the back of the queue,
 // Simulating the next round
 var predictPartyVictory = function (senate) {
-    let DVoters = [];
-    let RVoters = [];
-    let winningParty = '';
-    const n = senate.length;
+    let DP = [];
+    let RP = [];
 
-    for (let i = 0; i < n; i++) {
-        if (senate[i] === 'D') { DVoters.push(i); }
-        else { RVoters.push(i); }
-    }
-
-    while (DVoters.length > 0 && RVoters.length > 0) {
-        let currentRPosition = RVoters.shift();
-        let currentDPosition = DVoters.shift();
-
-        if (currentDPosition < currentRPosition) {
-            DVoters.push(currentDPosition + n) // Add n because they enter the back of the queue and still have voting power
-        }
-        if (currentDPosition > currentRPosition) {
-            RVoters.push(currentRPosition + n)
+    for (let i = 0; i < senate.length; i++) {
+        if (senate[i] === 'R') {
+            RP.push(i);
+        } else {
+            DP.push(i);
         }
     }
 
-    winningParty = RVoters.length > 0 ? "R" : "D";
+    while (DP.length > 0 && RP.length > 0) {
+        const DRep = DP.shift();
+        const RRep = RP.shift();
 
-    return winningParty;
+        if (DRep < RRep) {
+            DP.push(DRep + senate.length);
+        } else {
+            RP.push(RRep + senate.length);
+        }
+    }
+
+    return DP.length > 0 ? 'D Wins' : 'R Wins'
 };
 
 console.log(predictPartyVictory("RD"), "R Wins");
