@@ -6,42 +6,25 @@
 
 // Return the leftmost pivot index. If no such index exists, return -1.
 
-// Both solutions iterate through the array twice, once to get a sum and a second time to discover the pivot index
+// Iterate through the array twice, once to get a sum and a second time to discover the pivot index
 var pivotIndex = function (nums) {
-    let pivotI = -1;
-    let leftSum = 0;
+    // let rightSum = nums.reduce((acc, curr) => acc + curr, 0); // Shorter with reduce, but effectively the same
+
     let rightSum = 0;
-    let index = 0;
-    for (i = 1; i < nums.length; i++) {
-        rightSum += nums[i]
-    }
-    while (index < nums.length) {
-        if (rightSum === leftSum) {
-            pivotI = index;
-            break;
-        }
-        else {
-            leftSum += nums[index]
-            index++
-            rightSum -= nums[index]
-        }
-    }
-    return pivotI;
-};
+    nums.forEach(num => {
+        rightSum += num;
+    });
 
-// Using reduce
-var pivotIndex = function (nums) {
-    let totalSum = nums.reduce((acc, curr) => acc + curr, 0);
     let leftSum = 0;
-
-    for (let i = 0; i < nums.length; i++) {
-        if (leftSum === totalSum - leftSum - nums[i]) {
+    for (i = 0; i < nums.length; i++) {
+        rightSum -= nums[i];
+        if (leftSum === rightSum) {
             return i;
         }
         leftSum += nums[i];
     }
 
-    return -1; // If no pivot index found
+    return -1;
 };
 
 console.log(pivotIndex([1, 7, 3, 6, 5, 6]));
