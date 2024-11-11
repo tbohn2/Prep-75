@@ -38,32 +38,27 @@ ll.append(2);
 ll.append(3);
 ll.append(4);
 ll.append(5);
+// ll.append(6);
 
-
+// Start at even and odd heads, set node that is 2 away as next then move to next node until the end of the list, set even head as odd end next
 var oddEvenList = function (head) {
-    const firstEven = head.next;
-    let currentEven = head.next;
-    let currentOdd = head;
-    let prevOdd = null;
+    if (!head || !head.next) return head;
 
-    while (currentEven && currentEven.next) {
-        prevOdd = currentOdd;
-        currentOdd = currentEven.next;
-        prevOdd.next = currentOdd;
-        if (!currentOdd.next) {
-            currentEven.next = null;
-            break;
-        }
-        else {
-            currentEven.next = currentOdd.next;
-            currentEven = currentEven.next;
-        }
+    const evenStart = head.next;
+    let evenCurrent = head.next;
+    let oddCurrent = head;
+
+    while (evenCurrent && evenCurrent.next) { // When there is no even or no odd after the current even, that is the end of the list; no need to track prev
+        oddCurrent.next = oddCurrent.next.next;
+        evenCurrent.next = evenCurrent.next.next;
+
+        oddCurrent = oddCurrent.next;
+        evenCurrent = evenCurrent.next;
     }
 
-    currentOdd.next = firstEven;
+    oddCurrent.next = evenStart;
 
     return head;
-
 };
 
 console.log(oddEvenList(ll.head));
