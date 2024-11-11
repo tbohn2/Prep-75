@@ -55,14 +55,17 @@ ll.append(3);
 ll.append(4);
 ll.append(5);
 
+
+// For each node, made prev next and next prev
 var reverseList = function (head) {
     let prev = null;
-    let currentNode = head;
-    while (currentNode) {
-        let nextForwardNode = currentNode.next;
-        currentNode.next = prev;
-        prev = currentNode;
-        currentNode = nextForwardNode;
+    let current = head;
+
+    while (current) {
+        let next = current.next;
+        current.next = prev;
+        prev = current;
+        current = next;
     }
 
     return prev;
