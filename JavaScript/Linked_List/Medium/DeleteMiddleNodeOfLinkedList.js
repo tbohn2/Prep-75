@@ -42,9 +42,10 @@ ll.append(6);
 var deleteMiddle = function (head) {
     if (!head.next) { return null; }
 
+    let prev = head;
     let middleNode = head;
     let endNode = head;
-    while (endNode && endNode.next) { // The middle node is found at the lower of length/2, thus the count stops if at the end or if the end was passed by one node
+    while (endNode && endNode.next) { // The middle node is found at the lower of length/2, thus the count stops if at the end or if the end was passed by one node, depending if length is even or odd
         prev = middleNode;
         middleNode = middleNode.next
         endNode = endNode.next.next
@@ -54,4 +55,4 @@ var deleteMiddle = function (head) {
     return head;
 };
 
-console.log(reverseList(ll.head));
+console.log(deleteMiddle(ll.head));
