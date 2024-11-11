@@ -2,67 +2,42 @@
 
 // A row and column pair is considered equal if they contain the same elements in the same order (i.e., an equal array).
 
-// Create every sequence for rows and columns then compare them
+// O(n^2) space and time is most efficient
+// Store each row or column as string in Map with its occurences; alternately, store each row in Map, then compare to each column
 var equalPairs = function (grid) {
-    let columns = new Map();
+    let entries = new Map();
+    let count = 0;
 
-    // Make columns
-    for (i = 0; i < grid.length; i++) {
-        const row = grid[i]
-        for (x = 0; x < row.length; x++) {
-            if (!columns.has(x)) {
-                columns.set(x, '');
-            }
-            const newString = columns.get(x).concat(row[x]);
-            columns.set(x, newString)
+    for (let i = 0; i < grid.length; i++) {
+        let row = [];
+        let column = [];
+        for (let j = 0; j < grid.length; j++) {
+            row.push(grid[i][j]);
+            column.push(grid[j][i])
         }
+
+        row = row.join('');
+        column = column.join('');
+
+        entries.set(row, (entries.get(row) || 0) + 1)
+        entries.set(column, (entries.get(column) || 0) + 1)
     }
 
-    // Compare columns and rows
-    // Loop inside loop not as efficient
-    let numberOfPairs = 0;
-    for (row = 0; row < grid.length; row++) {
-        const rowValue = grid[row].join('');
+    entries.forEach(entry => {
+        if (entry > 1) {
+            count += entry - 1;
+        }
+    })
 
-        columns.forEach((column) => {
-            if (column === rowValue) {
-                numberOfPairs++;
-            }
-        })
-
-    }
-
-    return numberOfPairs;
+    return count;
 };
 
-// More efficient to track number of occurrences for each row or column and compare
-var equalPairs = function (grid) {
-    let columns = new Map();
-    let rows = new Map();
-
-    // Make columns and rows with corresponding occurrences
-    for (i = 0; i < grid.length; i++) {
-        const row = grid[i];
-        let colKey = '';
-        rows.set(row.join(''), (rows.get(row.join('')) || 0) + 1)
-
-        for (x = 0; x < row.length; x++) {
-            const col = grid[x][i];
-            colKey = colKey.concat(col)
-        }
-        columns.set(colKey, (columns.get(colKey) || 0) + 1)
-    }
-
-    // Compare columns and rows
-    let numberOfPairs = 0;
-    for (const [key] of rows) {
-        if (columns.has(key) && rows.has(key)) {
-            numberOfPairs += columns.get(key) * rows.get(key);
-        }
-    }
-
-    return numberOfPairs;
-};
-
-console.log(equalPairs([[3, 2, 1], [1, 7, 6], [2, 7, 7]]));
-console.log(equalPairs([[3, 1, 2, 2], [1, 4, 4, 5], [2, 4, 2, 2], [2, 4, 2, 2]]));
+console.log(equalPairs([
+    [3, 2, 1],
+    [1, 7, 6],
+    [2, 7, 7]]));
+console.log(equalPairs([
+    [3, 1, 2, 2],
+    [1, 4, 4, 5],
+    [2, 4, 2, 2],
+    [2, 4, 2, 2]]));
