@@ -33,10 +33,15 @@ class LinkedList {
 }
 
 const ll = new LinkedList();
-ll.append(5);
+// ll.append(5);
+// ll.append(4);
+// ll.append(2);
+// ll.append(1);
+
 ll.append(4);
 ll.append(2);
-ll.append(1);
+ll.append(2);
+ll.append(3);
 
 // Find middle node, flip second half, add nodes
 var pairSum = function (head) {
@@ -50,7 +55,7 @@ var pairSum = function (head) {
         fast = fast.next.next;
     }
 
-    // Reverse the second half of the list
+    // Reverse the second half of the list now that slow is the middle node
     let prev = null;
     let current = slow;
     while (current) {
@@ -63,15 +68,12 @@ var pairSum = function (head) {
 
     // Calculate the twin sums and find the maximum twin sum
     let maxSum = 0;
-    let firstHalf = head;
-    let secondHalf = prev;
-    while (secondHalf) { // When the secondHalf.next = null, secondHalf is set to null and while loop is exited
-        let sum = firstHalf.val + secondHalf.val;
-        if (sum > maxSum) {
-            maxSum = sum;
-        }
-        firstHalf = firstHalf.next;
-        secondHalf = secondHalf.next;
+    let firstHead = head;
+    let secondHead = prev;
+    while (secondHead) { // When the secondHead.next = null, secondHead is set to null and while loop is exited
+        maxSum = Math.max(firstHead.val + secondHead.val, maxSum);
+        firstHead = firstHead.next;
+        secondHead = secondHead.next;
     }
 
     return maxSum;
