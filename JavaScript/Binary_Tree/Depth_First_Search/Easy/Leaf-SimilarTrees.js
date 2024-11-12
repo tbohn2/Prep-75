@@ -35,67 +35,56 @@ root2.right.right.right = new TreeNode(8);
 
 
 // Post order traversal; LRN
-// Iterative
+// Iterative using stack; Avoids recursion depth limits
 var leafSimilar = function (root1, root2) {
-
     const getLeafValues = (root) => {
         const stack = [root];
-        const leafValues = [];
+        const leaveValues = [];
 
         while (stack.length > 0) {
-            const node = stack.pop();
-            if (node.left === null && node.right === null) {
-                leafValues.push(node.val);
-            }
+            let node = stack.pop();
 
-            if (node.right !== null) {
+            if (node.right) {
                 stack.push(node.right);
             }
-
-            if (node.left !== null) {
-                console.log(node.val, node.left.val);
-                stack.push(node.left);
+            if (node.left) {
+                stack.push(node.left)
+            }
+            if (!node.left && !node.right) {
+                leaveValues.push(node.val);
             }
         }
 
-        return leafValues;
-    };
+        return leaveValues;
+    }
 
     const leaves1 = getLeafValues(root1);
     const leaves2 = getLeafValues(root2);
 
-    console.log(leaves1, leaves2);
-
-    // Compare the two leaf values arrays
-    if (leaves1.length !== leaves2.length) {
-        return false;
-    }
-
-    for (let i = 0; i < leaves1.length; i++) {
-        if (leaves1[i] !== leaves2[i]) {
-            return false;
-        }
-    }
-
-    return true;
+    return leaves1.length === leaves2.length && leaves1.every((leaf, i) => leaf === leaves2[i]);
 };
 
-// Recursive
-var leafSimilar = function (root1, root2) {
-    const dfs = root => {
-        if (!root) {
-            return [];
-        }
-        let ans = [...dfs(root.left), ...dfs(root.right)]; // The spread operator is used to merge two arrays; 
-        // The leaf is added when the left and right children are null
-        if (!ans.length) {
-            ans = [root.val];
-        }
-        return ans;
-    };
-    const l1 = dfs(root1);
-    const l2 = dfs(root2);
-    return l1.toString() === l2.toString();
-};
+// Recursive; May lead to a stack overflow for deeply nested trees due to the function call stack
+// var leafSimilar = function (root1, root2) {
+//     const dfs = root => {
+//         if (!root) {
+//             return [];
+//         }
+
+//         let ans = [...dfs(root.left), ...dfs(root.right)]; // The spread operator is used to merge two arrays; dfs continues until leaves are found
+//         // The leaf is added when the left and right children are null
+//         if (!ans.length) {
+//             ans = [root.val];
+//         }
+
+//         return ans;
+//     };
+
+//     const l1 = dfs(root1);
+//     const l2 = dfs(root2);
+
+//     // return l1.length === l2.length && l1.every((val, idx) => val === l2[idx]); // More efficient with large trees
+//     return l1.toString() === l2.toString(); // or join()
+// };
 
 console.log(leafSimilar(root1, root2));
