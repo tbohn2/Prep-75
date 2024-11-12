@@ -9,17 +9,9 @@ function TreeNode(val, left, right) {
     this.right = (right === undefined ? null : right)
 }
 
-let root1 = new TreeNode(3);
-root1.left = new TreeNode(1);
-root1.left.left = new TreeNode(3);
-root1.right = new TreeNode(4);
-root1.right.left = new TreeNode(1);
-root1.right.right = new TreeNode(5);
+const root1 = new TreeNode(3, new TreeNode(1, new TreeNode(3)), new TreeNode(4, new TreeNode(1), new TreeNode(5)));
 
-let root2 = new TreeNode(3);
-root2.left = new TreeNode(3);
-root2.left.left = new TreeNode(4);
-root2.left.right = new TreeNode(2);
+const root2 = new TreeNode(3, new TreeNode(3, new TreeNode(4), new TreeNode(2)))
 
 // Make recursive function as simple as possible
 var goodNodes = function (root) {
@@ -27,7 +19,7 @@ var goodNodes = function (root) {
 
     // Compare current node val and max value
     const dfs = (node, max) => {
-        if (node === null) { return; }
+        if (!node) { return; }
 
         if (node.val >= max) { numGoodNodes++ };
 
@@ -43,6 +35,7 @@ var goodNodes = function (root) {
 };
 
 // Iterative solution
+// Compare current node with max value then store lower nodes for later comparison
 var goodNodes = function (root) {
     if (root === null) return 0;
 
@@ -61,10 +54,10 @@ var goodNodes = function (root) {
         const newMaxVal = Math.max(maxVal, node.val);
 
         // Push left and right children onto the stack, if they exist
-        if (node.right !== null) {
+        if (node.right) {
             stack.push([node.right, newMaxVal]);
         }
-        if (node.left !== null) {
+        if (node.left) {
             stack.push([node.left, newMaxVal]);
         }
     }
