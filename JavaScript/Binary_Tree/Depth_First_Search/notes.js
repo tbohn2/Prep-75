@@ -83,7 +83,7 @@ console.log("Inorder Traversal:", inorderTraversal(root));   // [1, 3, 2]
 console.log("Postorder Traversal:", postorderTraversal(root)); // [3, 2, 1]
 
 // Recursive Depth-First Search (DFS) Traversal Methods are preferred when time complexity is not a concern and code simplicity is desired.
-// Iterative Depth-First Search (DFS) Traversal Methods are preferred when time complexity is a concern and code size is large.
+// Iterative Depth-First Search (DFS) Traversal Methods are preferred when time complexity is a concern and code size is large. Stack will be used.
 
 // If using recursive, make the function as simple as possible and use it repeatedly;
 // In a recursive function, rather than an iterative approach, instead of pushing to a stack then popping it off the stack for analysis, a helper function is called inside itself

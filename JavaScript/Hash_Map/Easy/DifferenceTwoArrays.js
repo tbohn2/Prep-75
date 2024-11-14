@@ -5,6 +5,7 @@
 // Note that the integers in the lists may be returned in any order.
 
 // Sets only contain unique values of any type, thus is set1 and set2, there are no repeated values
+// Map.has(x) will search for a key that matches x, not for values
 
 var findDifference = function (nums1, nums2) {
     let set1 = new Set(nums1);
